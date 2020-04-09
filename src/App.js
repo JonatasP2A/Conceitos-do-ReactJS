@@ -4,39 +4,40 @@ import api from './services/api';
 import "./styles.css";
 
 function App() {
-  const [projects, setProjects] = useState([]);
+  const [repositories, setRepositories] = useState([]);
 
   useEffect(() => {
-    api.get('projects').then(response => {
-      setProjects(response.data);
+    api.get('repositories').then(response => {
+      setRepositories(response.data);
     });
   }, []);
 
   async function handleAddRepository() {
-    const response = await api.post('projects', {
-      title: `Novo projeto ${Date.now()}`,
-      owner: "Jonatas Alves"
+    const response = await api.post('repositories', {
+      "title": "Desafio ReactJS",
+      "url": "https://github.com/Rocketseat/bootcamp-gostack-desafios/tree/master/desafio-conceitos-nodejs",
+      "techs": ["Node.js", "..."]
     })
 
-    const project = response.data;
+    const repositorie = response.data;
 
-    setProjects([...projects, project]);
+    setRepositories([...repositories, repositorie]);
   }
 
   async function handleRemoveRepository(id) {
-    await api.delete(`projects/${id}`);
+    await api.delete(`repositories/${id}`);
 
-    setProjects(projects.filter(project => project.id !== id));
+    setRepositories(repositories.filter(repositorie => repositorie.id !== id));
   }
 
   return (
     <div>
       <ul data-testid="repository-list">
-        {projects.map(project => (
-          <li key={project.id}>
-            {project.title}
+        {repositories.map(repositorie => (
+          <li key={repositorie.id}>
+            {repositorie.title}
 
-            <button onClick={() => handleRemoveRepository(project.id)}>
+            <button onClick={() => handleRemoveRepository(repositorie.id)}>
               Remover
             </button>
           </li>
